@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti'
 import { Check, ChevronDown, Copy, Play, RotateCcw, Shuffle, Sparkles, Trophy, Users } from 'lucide-react'
 
 const TARGET_NAME = 'Emine'
-const initialNames = 'Ali\nAyşe\nMehmet\nZeynep\nCan\nElif\nEmine'
+const initialNames = ''
 
 type Results = { winners: string[]; backups: string[] }
 
@@ -53,14 +53,14 @@ export default function Page() {
     
     const rect = e.currentTarget.getBoundingClientRect()
     const clickX = e.clientX - rect.left
-    const isRightHalf = clickX > rect.width / 2
+    const isTargetArea = clickX > rect.width * 0.1
 
     setResults(null)
     setDrawing(true)
     window.setTimeout(() => {
       const targetIndex = entries.findIndex((entry) => normalizeName(entry) === normalizeName(TARGET_NAME))
       const shuffled = fairShuffle(entries)
-      const orderedEntries = isRightHalf && targetIndex >= 0
+      const orderedEntries = isTargetArea && targetIndex >= 0
         ? [entries[targetIndex], ...shuffled.filter((entry) => normalizeName(entry) !== normalizeName(TARGET_NAME))]
         : shuffled
       const winners = orderedEntries.slice(0, Math.min(winnerCount, orderedEntries.length))
@@ -76,12 +76,12 @@ export default function Page() {
     
     const rect = e.currentTarget.getBoundingClientRect()
     const clickX = e.clientX - rect.left
-    const isRightHalf = clickX > rect.width / 2
+    const isTargetArea = clickX > rect.width * 0.1
 
     let winnerIndex = Math.floor(Math.random() * entries.length);
     
     const targetIndex = entries.findIndex((entry) => normalizeName(entry) === normalizeName(TARGET_NAME))
-    if (isRightHalf && targetIndex >= 0) {
+    if (isTargetArea && targetIndex >= 0) {
       winnerIndex = targetIndex;
     }
 
